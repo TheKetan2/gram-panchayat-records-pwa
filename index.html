@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="mr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#104b43">
+  <meta name="description" content="Gram Panchayat Birth and Death Records">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>ग्रामपंचायत नोंद व्यवस्थापन</title>
+</head>
+<body>
+  <header class="top-app-bar">
+    <div class="brand">
+      <div class="brand-title">ग्रामपंचायत नोंद व्यवस्थापन</div>
+      <div class="brand-subtitle" id="villageLabel">चक ठाणेवासना · जन्म व मृत्यू</div>
+    </div>
+    <button class="icon-btn" id="langBtn" aria-label="भाषा बदला">अ/A</button>
+  </header>
+
+  <main id="app" class="main-content">
+    <section id="dashboard" class="page active">
+      <div class="welcome-row">
+        <div><div class="eyebrow" data-mr="नमस्कार" data-en="WELCOME">नमस्कार</div><h1 data-mr="नोंद व्यवस्थापन" data-en="Records overview">नोंद व्यवस्थापन</h1><p class="muted" data-mr="जन्म आणि मृत्यू नोंदींचा आढावा" data-en="Overview of birth and death records">जन्म आणि मृत्यू नोंदींचा आढावा</p></div>
+        <div class="avatar">GP</div>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card birth-stat"><span class="stat-icon">♧</span><span class="stat-label" data-mr="एकूण जन्म" data-en="Total births">एकूण जन्म</span><strong id="birthCount">0</strong><small data-mr="नोंदवलेले रेकॉर्ड" data-en="Records saved">नोंदवलेले रेकॉर्ड</small></article>
+        <article class="stat-card death-stat"><span class="stat-icon">♡</span><span class="stat-label" data-mr="एकूण मृत्यू" data-en="Total deaths">एकूण मृत्यू</span><strong id="deathCount">0</strong><small data-mr="नोंदवलेले रेकॉर्ड" data-en="Records saved">नोंदवलेले रेकॉर्ड</small></article>
+        <article class="stat-card neutral-stat"><span class="stat-icon">▦</span><span class="stat-label" data-mr="या महिन्यात" data-en="This month">या महिन्यात</span><strong id="monthCount">0</strong><small data-mr="घटना दिनांकानुसार" data-en="By event date">घटना दिनांकानुसार</small></article>
+        <article class="stat-card neutral-stat"><span class="stat-icon">⇧</span><span class="stat-label" data-mr="सिंक बाकी" data-en="Pending sync">सिंक बाकी</span><strong id="syncCount">0</strong><small data-mr="Drive वर पाठवायचे बदल" data-en="Changes to sync to Drive">Drive वर पाठवायचे बदल</small></article>
+      </div>
+      <h2 class="section-heading" data-mr="जलद कृती" data-en="Quick actions">जलद कृती</h2>
+      <div class="action-grid">
+        <button class="action-tile green-tile" data-go="birth-form"><span class="tile-icon">＋</span><span><b data-mr="नवीन जन्म नोंद" data-en="Add birth record">नवीन जन्म नोंद</b><small data-mr="जन्माची माहिती भरा" data-en="Enter birth details">जन्माची माहिती भरा</small></span></button>
+        <button class="action-tile blue-tile" data-go="death-form"><span class="tile-icon">＋</span><span><b data-mr="नवीन मृत्यू नोंद" data-en="Add death record">नवीन मृत्यू नोंद</b><small data-mr="मृत्यूची माहिती भरा" data-en="Enter death details">मृत्यूची माहिती भरा</small></span></button>
+        <button class="action-tile" data-go="monthly"><span class="tile-icon">▦</span><span><b data-mr="मासिक नोंदवही" data-en="Monthly register">मासिक नोंदवही</b><small data-mr="महिन्यानुसार नोंदी" data-en="Browse by month">महिन्यानुसार नोंदी</small></span></button>
+        <button class="action-tile" data-go="search"><span class="tile-icon">⌕</span><span><b data-mr="नोंद शोधा" data-en="Search records">नोंद शोधा</b><small data-mr="नाव किंवा क्रमांक" data-en="Name or number">नाव किंवा क्रमांक</small></span></button>
+      </div>
+      <div class="section-title-row"><h2 class="section-heading" data-mr="अलीकडील नोंदी" data-en="Recent records">अलीकडील नोंदी</h2><button class="text-btn" data-go="birth">सर्व पहा →</button></div>
+      <div id="recentRecords" class="record-list"></div>
+      <div class="notice-card"><span>ⓘ</span><div><b data-mr="महत्त्वाची सूचना" data-en="Important note">महत्त्वाची सूचना</b><p data-mr="ही स्थानिक MVP आवृत्ती आहे. प्रत्यक्ष नागरिकांची संवेदनशील माहिती किंवा आधार कागदपत्रे उत्पादन वापरासाठी सुरक्षित सर्व्हर व अधिकृत प्रवेश नियंत्रणाशिवाय साठवू नका." data-en="This is a local MVP. Do not store real sensitive records or Aadhaar documents for production without secure server-side storage and authorized access controls.">ही स्थानिक MVP आवृत्ती आहे. प्रत्यक्ष नागरिकांची संवेदनशील माहिती किंवा आधार कागदपत्रे उत्पादन वापरासाठी सुरक्षित सर्व्हर व अधिकृत प्रवेश नियंत्रणाशिवाय साठवू नका.</p></div></div>
+    </section>
+
+    <section id="birth" class="page">
+      <div class="page-heading"><div><div class="eyebrow">REGISTER</div><h1 data-mr="जन्म नोंदवही" data-en="Birth register">जन्म नोंदवही</h1></div><button class="fab-inline" data-go="birth-form">＋</button></div>
+      <div class="search-field"><span>⌕</span><input id="birthSearch" placeholder="नाव / नोंदणी क्रमांक शोधा"></div>
+      <div id="birthList" class="record-list"></div>
+    </section>
+
+    <section id="death" class="page">
+      <div class="page-heading"><div><div class="eyebrow">REGISTER</div><h1 data-mr="मृत्यू नोंदवही" data-en="Death register">मृत्यू नोंदवही</h1></div><button class="fab-inline" data-go="death-form">＋</button></div>
+      <div class="search-field"><span>⌕</span><input id="deathSearch" placeholder="नाव / नोंदणी क्रमांक शोधा"></div>
+      <div id="deathList" class="record-list"></div>
+    </section>
+
+    <section id="monthly" class="page">
+      <div class="page-heading"><div><div class="eyebrow">REPORTS</div><h1 data-mr="मासिक नोंदवही" data-en="Monthly register">मासिक नोंदवही</h1><p class="muted" data-mr="घटना दिनांक आणि नोंदणी दिनांक स्वतंत्रपणे पहा" data-en="View event date and registration date separately">घटना दिनांक आणि नोंदणी दिनांक स्वतंत्रपणे पहा</p></div></div>
+      <div class="filter-card">
+        <label><span data-mr="वर्ष" data-en="Year">वर्ष</span><select id="monthYear"></select></label>
+        <label><span data-mr="आधार" data-en="Date basis">आधार</span><select id="dateBasis"><option value="eventDate">घटना दिनांक</option><option value="registrationDate">नोंदणी दिनांक</option></select></label>
+        <label><span data-mr="नोंद प्रकार" data-en="Record type">नोंद प्रकार</span><select id="monthType"><option value="all">दोन्ही</option><option value="birth">जन्म</option><option value="death">मृत्यू</option></select></label>
+      </div>
+      <div class="month-summary"><div><small data-mr="जन्म" data-en="Births">जन्म</small><strong id="monthlyBirths">0</strong></div><div><small data-mr="मृत्यू" data-en="Deaths">मृत्यू</small><strong id="monthlyDeaths">0</strong></div><div><small data-mr="एकूण" data-en="Total">एकूण</small><strong id="monthlyTotal">0</strong></div></div>
+      <div class="surface-card">
+        <div class="card-title-row"><h2 data-mr="महिन्यानुसार सारांश" data-en="Month-wise summary">महिन्यानुसार सारांश</h2><button class="text-btn" id="exportCsv">CSV ↓</button></div>
+        <div class="month-table-wrap"><table><thead><tr><th>महिना</th><th>जन्म</th><th>मृत्यू</th><th>एकूण</th></tr></thead><tbody id="monthRows"></tbody><tfoot id="monthFoot"></tfoot></table></div>
+      </div>
+      <div class="surface-card"><div class="card-title-row"><h2 id="selectedMonthTitle">जानेवारी नोंदी</h2><span class="count-pill" id="selectedMonthCount">0</span></div><div id="monthlyRecords" class="record-list compact-list"></div></div>
+    </section>
+
+    <section id="reports" class="page">
+      <div class="page-heading"><div><div class="eyebrow">ANALYTICS</div><h1 data-mr="अहवाल" data-en="Reports">अहवाल</h1><p class="muted" data-mr="नोंदींचा आढावा आणि निर्यात" data-en="Record overview and exports">नोंदींचा आढावा आणि निर्यात</p></div></div>
+      <div class="surface-card"><h2 data-mr="वार्षिक सारांश" data-en="Annual summary">वार्षिक सारांश</h2><div class="chart-legend"><span><i class="dot green"></i> जन्म</span><span><i class="dot blue"></i> मृत्यू</span></div><div id="yearChart" class="bar-chart"></div></div>
+      <div class="action-grid single-grid"><button class="action-tile" id="exportAll"><span class="tile-icon">⇩</span><span><b data-mr="सर्व नोंदी CSV मध्ये निर्यात" data-en="Export all records to CSV">सर्व नोंदी CSV मध्ये निर्यात</b><small>CSV spreadsheet</small></span></button><button class="action-tile" id="printReport"><span class="tile-icon">▤</span><span><b data-mr="अहवाल प्रिंट करा" data-en="Print report">अहवाल प्रिंट करा</b><small>Print-friendly view</small></span></button></div>
+    </section>
+
+    <section id="more" class="page">
+      <div class="page-heading"><div><div class="eyebrow">APPLICATION</div><h1 data-mr="अधिक" data-en="More">अधिक</h1></div></div>
+      <div class="settings-list">
+        <button data-go="monthly"><span>▦</span><b>मासिक नोंदवही</b><small>›</small></button>
+        <button data-go="search"><span>⌕</span><b>नोंदी शोधा</b><small>›</small></button>
+        <button data-go="documents"><span>▤</span><b>कागदपत्रे</b><small>›</small></button>
+        <button data-go="settings"><span>⚙</span><b>सेटिंग्ज</b><small>›</small></button>
+        <button id="installBtn"><span>▣</span><b>अॅप इन्स्टॉल करा</b><small>›</small></button>
+        <button id="backupBtn"><span>⇧</span><b>डेटा बॅकअप डाउनलोड</b><small>›</small></button>
+      </div>
+      <section class="surface-card developer-card" aria-labelledby="developerInfoTitle">
+        <div class="developer-mark" aria-hidden="true">KR</div>
+        <div class="developer-copy">
+          <h2 id="developerInfoTitle">विकासक माहिती</h2>
+          <strong>Ketan D Ramteke</strong>
+          <p class="muted">ग्रामपंचायत नोंद व्यवस्थापन · आवृत्ती 0.1</p>
+          <a class="developer-github" href="https://github.com/theketan2" target="_blank" rel="noopener noreferrer" aria-label="Ketan D Ramteke यांचे GitHub प्रोफाइल">GitHub प्रोफाइल <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+      <p class="muted small">आवृत्ती 0.1 · स्थानिक डेमो · अधिकृत CRS प्रणालीशी जोडलेले नाही</p>
+    </section>
+
+    <section id="search" class="page">
+      <div class="page-heading"><div><div class="eyebrow">FIND</div><h1 data-mr="नोंदी शोधा" data-en="Search records">नोंदी शोधा</h1></div></div>
+      <div class="search-field"><span>⌕</span><input id="globalSearch" placeholder="नाव, पालकांचे नाव किंवा क्रमांक"></div>
+      <div class="segmented" id="searchType"><button class="selected" data-type="all">सर्व</button><button data-type="birth">जन्म</button><button data-type="death">मृत्यू</button></div>
+      <div id="searchResults" class="record-list"></div>
+    </section>
+
+    <section id="documents" class="page">
+      <div class="page-heading"><div><div class="eyebrow">FILES</div><h1 data-mr="कागदपत्रे" data-en="Documents">कागदपत्रे</h1></div></div>
+      <div class="notice-card"><span>ⓘ</span><div><b>स्थानिक डेमो</b><p>या आवृत्तीत कागदपत्रे निवडण्याची सुविधा नोंद फॉर्ममध्ये आहे. फाइल्स सध्या या डिव्हाइसवरच राहतात; उत्पादनासाठी Firebase Storage व सुरक्षित नियम आवश्यक आहेत.</p></div></div>
+      <div id="documentList" class="record-list"></div>
+    </section>
+
+    <section id="settings" class="page">
+      <div class="page-heading"><div><div class="eyebrow">PREFERENCES</div><h1 data-mr="सेटिंग्ज" data-en="Settings">सेटिंग्ज</h1></div></div>
+      <div class="surface-card form-stack"><label>ग्रामपंचायत नाव<input id="settingGp" value="ग्रामपंचायत चक ठाणेवासना"></label><label>तालुका<input id="settingTaluka" value="पोभुर्णा"></label><label>जिल्हा<input id="settingDistrict" value="चंद्रपूर"></label><button class="primary-btn" id="saveSettings">सेटिंग्ज जतन करा</button><button class="outline-btn danger-text" id="clearData">डेमो डेटा हटवा</button></div>
+      <div class="surface-card form-stack drive-sync-card"><div><h2>Google Drive ऑनलाइन सिंक</h2><p class="muted">या डिव्हाइसवरील नोंदींची एन्क्रिप्ट न केलेली JSON प्रत तुमच्या Drive खात्यात जतन होईल.</p></div><div class="drive-actions"><button class="primary-btn" id="driveSyncBtn">Google Drive शी कनेक्ट करून सिंक करा</button><button class="outline-btn" id="driveRestoreBtn">Drive बॅकअप पुनर्स्थापित करा</button></div><p class="muted">Restore केल्यास या डिव्हाइसवरील नोंदी Drive मधील बॅकअपने बदलतील.</p><p id="driveStatus" class="muted" role="status">कनेक्ट केलेले नाही · सिंकसाठी इंटरनेट आवश्यक</p></div>
+    </section>
+
+    <section id="birth-form" class="page form-page"></section>
+    <section id="death-form" class="page form-page"></section>
+    <section id="detail" class="page"></section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="मुख्य नेव्हिगेशन">
+    <button class="nav-item active" data-page="dashboard"><span>⌂</span><small>मुख्य</small></button>
+    <button class="nav-item" data-page="birth"><span>♧</span><small>जन्म</small></button>
+    <button class="nav-item" data-page="death"><span>♡</span><small>मृत्यू</small></button>
+    <button class="nav-item" data-page="reports"><span>▥</span><small>अहवाल</small></button>
+    <button class="nav-item" data-page="more"><span>⋯</span><small>अधिक</small></button>
+  </nav>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="document-store.js"></script>
+  <script src="drive-sync.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

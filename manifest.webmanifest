@@ -1,0 +1,20 @@
+{
+  "name": "Gram Panchayat Birth & Death Records",
+  "short_name": "GP Records",
+  "description": "जन्म व मृत्यू नोंद व्यवस्थापन",
+  "lang": "mr-IN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f1f4ef",
+  "theme_color": "#104b43",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
